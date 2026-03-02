@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getPost, getPostSlugs } from "@/lib/posts";
+import { getPost, getAllPostsMeta } from "@/lib/posts";
 import type { Metadata } from "next";
 
 interface PostPageProps {
@@ -7,8 +7,7 @@ interface PostPageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = getPostSlugs();
-  return slugs.map((slug) => ({ slug }));
+  return getAllPostsMeta().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +16,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPost(slug);
 
-  if (!post) {
+  if (!post || !post.published) {
     return { title: "Post Not Found" };
   }
 
@@ -41,7 +40,7 @@ export default async function PostPage({ params }: PostPageProps) {
         <h1>{post.title}</h1>
         <p className="post-meta">
           <time dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString("en-US", {
+            {new Date(`${post.date}T00:00:00`).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",

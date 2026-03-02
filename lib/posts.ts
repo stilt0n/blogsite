@@ -6,7 +6,22 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import type { Schema } from "hast-util-sanitize";
 import type { PostFrontmatter, PostMeta, Post } from "./types";
+
+// Extend the default schema to allow inline styles and data-* attributes
+// produced by rehype-pretty-code for syntax highlighting.
+const sanitizeSchema: Schema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    "*": [...(defaultSchema.attributes?.["*"] ?? []), "style"],
+    code: [...(defaultSchema.attributes?.code ?? []), "data*"],
+    pre: [...(defaultSchema.attributes?.pre ?? []), "data*", "tabIndex"],
+    span: [...(defaultSchema.attributes?.span ?? []), "data*"],
+  },
+};
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -62,6 +77,7 @@ export async function getPost(slug: string): Promise<Post | null> {
       theme: "github-dark",
       keepBackground: true,
     })
+    .use(rehypeSanitize, sanitizeSchema)
     .use(rehypeStringify)
     .process(rawContent);
 

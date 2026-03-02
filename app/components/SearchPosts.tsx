@@ -11,8 +11,8 @@ interface SearchPostsProps {
 export default function SearchPosts({ posts }: SearchPostsProps) {
   const [query, setQuery] = useState("");
 
+  const searchText = query.toLowerCase();
   const filteredPosts = posts.filter((post) => {
-    const searchText = query.toLowerCase();
     return (
       post.title.toLowerCase().includes(searchText) ||
       post.description.toLowerCase().includes(searchText) ||
