@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "spellcheck": "cspell \"posts/**/*.md\""
+    "spellcheck": "cspell \"posts/**/*.md\"",
+    "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
     "@picocss/pico": "^2",
@@ -26,6 +27,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript/native-preview": "^7.0.0-dev.20260301.1",
     "cspell": "^8",
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
