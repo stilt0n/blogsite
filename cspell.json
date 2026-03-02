@@ -1,0 +1,26 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "nextjs",
+    "rehype",
+    "remark",
+    "frontmatter",
+    "shiki",
+    "picocss",
+    "cspell",
+    "blogsite",
+    "slugs",
+    "webdev"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    ".next",
+    "package.json",
+    "package-lock.json",
+    "bun.lock"
+  ],
+  "ignoreRegExpList": [
+    "/```[\\s\\S]*?```/g"
+  ]
+}
