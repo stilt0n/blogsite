@@ -3,6 +3,7 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header>
+      <div className="container">
       <nav>
         <ul>
           <li>
@@ -20,6 +21,7 @@ export default function Header() {
           </li>
         </ul>
       </nav>
+      </div>
     </header>
   );
 }
