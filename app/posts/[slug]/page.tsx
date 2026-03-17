@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPost, getAllPostsMeta } from "@/lib/posts";
+import PostContent from "@/app/components/PostContent";
 import type { Metadata } from "next";
 
 interface PostPageProps {
@@ -55,10 +56,7 @@ export default async function PostPage({ params }: PostPageProps) {
           ))}
         </div>
       </header>
-      <div
-        className="post-content"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      <PostContent html={post.content} />
     </article>
   );
 }

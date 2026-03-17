@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -14,9 +15,11 @@ import type { PostFrontmatter, PostMeta, Post } from "./types";
 // produced by rehype-pretty-code for syntax highlighting.
 const sanitizeSchema: Schema = {
   ...defaultSchema,
+  clobberPrefix: "",
   attributes: {
     ...defaultSchema.attributes,
-    "*": [...(defaultSchema.attributes?.["*"] ?? []), "style"],
+    "*": [...(defaultSchema.attributes?.["*"] ?? []), "style", "id"],
+    a: [...(defaultSchema.attributes?.a ?? []), "data*"],
     code: [...(defaultSchema.attributes?.code ?? []), "data*"],
     pre: [...(defaultSchema.attributes?.pre ?? []), "data*", "tabIndex"],
     span: [...(defaultSchema.attributes?.span ?? []), "data*"],
@@ -72,7 +75,8 @@ export async function getPost(slug: string): Promise<Post | null> {
 
   const processedContent = await unified()
     .use(remarkParse)
-    .use(remarkRehype)
+    .use(remarkGfm)
+    .use(remarkRehype, { clobberPrefix: "" })
     .use(rehypePrettyCode, {
       theme: "github-dark",
       keepBackground: true,

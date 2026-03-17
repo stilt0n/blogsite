@@ -1,6 +1,6 @@
 @import "@picocss/pico/css/pico.min.css";
 
-html {
+body {
   overflow-x: hidden;
 }
 
